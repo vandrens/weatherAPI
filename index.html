@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css"
+</head>
+<body>
+    <h1>Weather App</h1>
+    <form id="city-form">
+        <label for="city-input">Enter a city:</label>
+        <input type="text" id="city-input" name="city" required>
+        <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-data"></div>
+
+    <script>
+        const apiKey = '1d9ce7ce7dc1be60587653a974ddbd37'; 
+        const form = document.getElementById('city-form');
+        const weatherDataDiv = document.getElementById('weather-data');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const city = document.getElementById('city-input').value;
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const temperatureCelsius = (data.main.temp - 273.15).toFixed(2);
+                    const weatherData = `Weather in ${city}: ${data.weather[0].description}, Temperature: ${temperatureCelsius}°C`;
+                    weatherDataDiv.innerText = weatherData;
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    weatherDataDiv.innerText = 'Error fetching weather data. Please try again.';
+                });
+        });
+    </script>
+    <footer>
+        <h6>Vandre Nobrega Swaab 200548730 </h6>
+    </footer>
+</body>
+</html>
